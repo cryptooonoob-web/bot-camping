@@ -1,0 +1,28 @@
+name: Check Camping Price
+
+on:
+  schedule:
+    # Cette ligne dit à GitHub de se lancer tous les jours à 08h00 UTC (9h ou 10h en France)
+    - cron: '0 8 * * *'
+  workflow_dispatch: # Permet de lancer le bot manuellement quand tu veux
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Récupérer le code du dépôt
+      uses: actions/checkout@v4
+
+    - name: Installer Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Installer les dépendances
+      run: |
+        pip install requests playwright
+        playwright install chromium
+
+    - name: Executer le script de vérification
+      run: python camping.py
